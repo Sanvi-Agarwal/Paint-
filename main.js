@@ -1,38 +1,45 @@
-var canvas = document.getElementById("My_Canvas");
+var mouseEvent = "empty";
+
+var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-ctx.beginPath();
-ctx.strokeStyle = "black";
-ctx.lineWidth = 2;
-ctx.rect(150, 143, 430, 200);
-ctx.stroke();
+var color = "black";
+var width_of_line = 2;
+var radius = 20;
+canvas.addEventListener("mousedown", my_mousedown)
 
-ctx.beginPath();
-ctx.strokeStyle = "blue";
-ctx.lineWidth = 5;
-ctx.arc(250, 210, 40, 0, 2 * Math.PI);
-ctx.stroke();
+function my_mousedown(e) {
+    color = document.getElementById("color").value;
+    width_of_line = document.getElementById("width_of_line").value;
+    radius = document.getElementById("radius").value;
+    mouseEvent = "mouseDown";
+}
 
-ctx.beginPath();
-ctx.strokeStyle = "black";
-ctx.lineWidth = 5;
-ctx.arc(350, 210, 40, 0, 2 * Math.PI);
-ctx.stroke();
+canvas.addEventListener("mousemove", my_mousemove);
 
-ctx.beginPath();
-ctx.strokeStyle = "red";
-ctx.lineWidth = 5;
-ctx.arc(450, 210, 40, 0, 2 * Math.PI);
-ctx.stroke();
+function my_mousemove(e) {
+    var current_position_of_mouse_x = e.clientX - canvas.offsetLeft;
 
-ctx.beginPath();
-ctx.strokeStyle = "orange";
-ctx.lineWidth = 5;
-ctx.arc(300, 250, 40, 0, 2 * Math.PI);
-ctx.stroke();
+    var current_position_of_mouse_y = e.clientY - canvas.offsetTop;
+    if (mouseEvent == "mouseDown") {
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width_of_line;
+        ctx.arc(current_position_of_mouse_x, current_position_of_mouse_y, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
+}
+canvas.addEventListener("mouseup", my_mouseup);
 
-ctx.beginPath();
-ctx.strokeStyle = "green";
-ctx.lineWidth = 5;
-ctx.arc(400,250, 40, 0, 2 * Math.PI);
-ctx.stroke();
+function my_mouseup(e) {
+    mouseEvent = "mouseUP";
+}
+canvas.addEventListener("mouseleave", my_mouseleave);
+
+function my_mouseleave(e) {
+    mouseEvent = "mouseUP"
+}
+
+function clearArea() {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.heigth);
+}
